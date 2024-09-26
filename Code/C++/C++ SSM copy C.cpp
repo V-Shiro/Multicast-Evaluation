@@ -6,20 +6,22 @@
     #include <Windows.h>
     #include <io.h> //close
 #else
+    #include <sys/types.h>
     #include <sys/socket.h> 
     #include <netinet/in.h> 
     #include <arpa/inet.h>
     #include <unistd.h> //close
 #endif
-#include <stdio.h> //printf
+#include <iostream>     //std print
+#include <cstdio> //printf
 #include <string.h> //memset
 
 #define MSGBUFSIZE 256
+#define GROUP "232.1.1.1"  // Example multicast group (SSM range 232.0.0.0/8)
+#define PORT 12345          // Example port number
+#define SOURCE "192.168.1.10" // Example source address (SSM source)
 
 int main() {
-    char* group = "127.0.0.1"; // e.g. 239.255.255.250 for SSDP
-    int port = 12345; // 0 if error, which is an invalid port
-
     // Initialize Windows Socket API with given VERSION.
 #ifdef _WIN32
     WSADATA wsaData;
@@ -43,36 +45,36 @@ int main() {
         return 1;
     }
 
-    //set address family to IPv4
+    // Bind to the specified port
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY); // accept any IPv4 address
-    
+    addr.sin_port = htons(PORT);
+    addr.sin_addr.s_addr = INADDR_ANY;
 
-    // bind to receive address
     if (bind(fd, (struct sockaddr*) &addr, sizeof(addr)) < 0) {
         printf("bind");
         return 1;
     }
 
-    // join Multicast Group with membership
-    struct ip_mreq mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(group);
-    mreq.imr_interface.s_addr = htonl(INADDR_ANY);
+    // Join the multicast group with a specific source (SSM)
+    struct ip_mreq_source mreq;
+    mreq.imr_multiaddr.s_addr = inet_addr(GROUP);  // Multicast group address
+    mreq.imr_sourceaddr.s_addr = inet_addr(SOURCE);  // Specific source address
+    mreq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
 
-    if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
+    if (setsockopt(fd, IPPROTO_IP, IP_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("setsockopt");
         return 1;
     }
 
     // receive loop
-    printf("Receiving on port %d...\n", port);
+    printf("Receiving on port %d...\n", PORT);
     while (1) {
         char msgbuf[MSGBUFSIZE];
-        int addrlen = sizeof(addr);
-        int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &addr,&addrlen);
+        struct sockaddr_in remoteAddr;
+        socklen_t addrlen = sizeof(remoteAddr);
+        int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &remoteAddr,&addrlen);
         if (nbytes < 0) {
             printf("recvfrom");
             return 1;

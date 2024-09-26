@@ -1,24 +1,26 @@
-//Source used: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//Source: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//Source: https://medium.com/@jinscott/c-winsock2-multicasting-d17ba2d088b3
 
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
     #include <Ws2tcpip.h> // needed for ip_mreq definition for multicast
     #include <Windows.h>
-    #include <io.h> //close
+    #include <io.h>
 #else
     #include <sys/socket.h> 
     #include <netinet/in.h> 
     #include <arpa/inet.h>
-    #include <unistd.h> //close
+    #include <unistd.h>
 #endif
-#include <stdio.h> //printf
-#include <string.h> //memset
+#include <iostream>     //std print
+#include <string.h>     //memset
+#include <cstdio>       //print
 
 #define MSGBUFSIZE 256
+int port = 4321;
+const char* multicastGroupIP = "226.1.1.1";
 
 int main() {
-    char* group = "127.0.0.1"; // e.g. 239.255.255.250 for SSDP
-    int port = 12345; // 0 if error, which is an invalid port
 
     // Initialize Windows Socket API with given VERSION.
 #ifdef _WIN32
@@ -37,9 +39,10 @@ int main() {
     }
 
     // allow multiple sockets to use the same PORT number
-    u_int yes = 1;
+    int yes = 1;
     if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*) &yes, sizeof(yes)) < 0){
         printf("Reusing ADDR failed");
+        close(fd);
         return 1;
     }
 
@@ -54,16 +57,18 @@ int main() {
     // bind to receive address
     if (bind(fd, (struct sockaddr*) &addr, sizeof(addr)) < 0) {
         printf("bind");
+        close(fd);
         return 1;
     }
 
     // join Multicast Group with membership
     struct ip_mreq mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(group);
+    mreq.imr_multiaddr.s_addr = inet_addr(multicastGroupIP);
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
     if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("setsockopt");
+        close(fd);
         return 1;
     }
 
@@ -71,10 +76,12 @@ int main() {
     printf("Receiving on port %d...\n", port);
     while (1) {
         char msgbuf[MSGBUFSIZE];
-        int addrlen = sizeof(addr);
-        int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &addr,&addrlen);
+        struct sockaddr_in remoteAddr;
+        socklen_t addrlen = sizeof(remoteAddr);
+        int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &remoteAddr,&addrlen);
         if (nbytes < 0) {
             printf("recvfrom");
+            close(fd);
             return 1;
         }
         msgbuf[nbytes] = '\0';

@@ -1,0 +1,3 @@
+https://linux.die.net/man/3/setsockopt
+
+https://learn.microsoft.com/en-us/dotnet/api/system.net.sockets.socketoptionname?view=net-8.0#system-net-sockets-socketoptionname-multicastloopback

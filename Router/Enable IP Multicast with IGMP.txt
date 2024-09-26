@@ -1,0 +1,37 @@
+https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/networking_guide/sec-enabling_ip_multicast_with_igmp#sec-Enabling_IP_Multicast_with_IGMP
+
+ The Internet Group Management Protocol (IGMP) enables the administrator to manage routing and subscription to multicast traffic between networks, hosts, and routers. The kernel in Red Hat Enterprise Linux supports IGMPv3.
+To display multicast information, use the ip maddr show subcommand, for example:
+
+~]$ ip maddr show dev br0
+8:	br0
+	inet  224.0.0.1
+	inet6 ff02::1
+	inet6 ff01::1
+[output truncated]
+
+Alternatively, look for the MULTICAST string in the ip link show command output, for example:
+
+~]$ ip link show br0
+8: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT qlen 1000
+    link/ether 6c:0b:84:67:fe:63 brd ff:ff:ff:ff:ff:ff
+
+To disable multicast on a device and to check that multicast is disabled on the br0 device:
+
+~]# ip link set multicast off dev br0
+~]$ ip link show br0
+8: br0: <BROADCAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT qlen 1000
+    link/ether 6c:0b:84:67:fe:63 brd ff:ff:ff:ff:ff:ff
+
+The missing MULTICAST string indicates that multicast is disabled.
+To enable multicast on the br0 device and to check it is enabled:
+
+~]# ip link set multicast on dev br0
+~]$ ip link show br0
+8: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT qlen 1000
+    link/ether 6c:0b:84:67:fe:63 brd ff:ff:ff:ff:ff:ff
+
+See the ip Command Cheat Sheet for Red Hat Enterprise Linux article and the ip(8) man page for more information.
+To check current version of IGMP and IP addresses subscribed for multicasting, see the /proc/net/igmp file:
+
+~]$ cat /proc/net/igmp
