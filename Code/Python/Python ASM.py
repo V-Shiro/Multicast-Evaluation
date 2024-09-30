@@ -32,4 +32,6 @@ while True:
   message = data.decode('utf-8')
   print(message)
 
+s.setsockopt(socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq)
+
 s.close()

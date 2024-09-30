@@ -63,7 +63,7 @@ int main() {
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 
     if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
-        printf("setsockopt");
+        printf("add membership");
         return 1;
     }
 
@@ -79,6 +79,11 @@ int main() {
         }
         msgbuf[nbytes] = '\0';
         printf(msgbuf);
+    }
+
+    if (setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
+        printf("drop membership");
+        return 1;
     }
 
     // Clean up

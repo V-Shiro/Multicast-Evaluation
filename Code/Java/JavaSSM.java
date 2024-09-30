@@ -1,51 +1,63 @@
 // https://docs.oracle.com/javase/8/docs/api/java/net/MulticastSocket.html
 // https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/MulticastSocket.html
 // https://www.baeldung.com/java-broadcast-multicast
-// https://medium.com/@AlexanderObregon/introduction-to-multicast-sockets-in-java-c276a897d8e8
 // https://www.kompf.de/java/multicast.html
 // https://medium.com/@AlexanderObregon/introduction-to-multicast-sockets-in-java-c276a897d8e8
+
+
+// not supported
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class JavaASM {
+public class Main {
     public static void main(){
 
         // port, multicast IP, source IP
-        InetAddress multicastAddress = InetAddress.getByName("239.255.255.250");
+        InetAddress multicastAddress = null;
         final int multicastPort = 1900;
-        InetAddress sourceAddress = InetAddress.getByName("250.255.255.250");
+        InetAddress sourceAddress = null;
+        
+        MulticastSocket socket = null;
+        DatagramPacket packet = null; 
+        byte[] buf = null;  
 
-        // create socket
-        MulticastSocket socket = new MulticastSocket(multicastPort);
+        try { 
+            // set multicast ip and source ip
+            multicastAddress = InetAddress.getByName("239.255.255.250");
+            sourceAddress = InetAddress.getByName("250.255.255.250");
 
-        // reuse address
-        socket.setReuseAddress(true);
+            // create socket
+            socket = new MulticastSocket(multicastPort);
 
-        socket.bind(multicastAddress, multicastPort);
+            // reuse address
+            socket.setReuseAddress(true);
 
-        // Bind to the specified network interface (can be replaced with your interface)
-        NetworkInterface networkInterface = NetworkInterface.getByName(INADDR_ANY);
+            // join SSM
+            socket.joinGroup(multicastAddress, 0, sourceAddress);
 
-        // join SSM
-        socket.joinGroup(multicastAddress, 0, sourceAddress);
+            // receive
+            buf = new byte[1024];
+            packet = new DatagramPacket(buf, buf.length);
+            while (Thread.currentThread().isInterrupted()) {
 
-        // receive
-        byte[] buf = new byte[1024];
-        DatagramPacket packet = new DatagramPacket(buf, buf.length);
-        while (Thread.currentThread().isInterrupted()) {
+                socket.receive(packet);
 
-            socket.receive(packet);
-
-            String received = new String(packet.getData(), 0, packet.getLength());
-            System.out.println(received);
-            if ("end".equals(received)) {
-                break;
+                String received = new String(packet.getData(), 0, packet.getLength());
+                System.out.println(received);
+                if ("end".equals(received)) {
+                    break;
+                }
             }
-        }
-        //clean up
-        socket.leaveGroup(multicastAddress);
-        socket.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }  
+        try {//clean up
+            socket.leaveGroup(multicastAddress);
+            socket.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }  
     }
 }

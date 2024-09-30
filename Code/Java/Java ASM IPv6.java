@@ -7,6 +7,7 @@
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.NetworkInterface;
 
 public class Main { 
     public static void main(String[] args){
@@ -21,7 +22,7 @@ public class Main {
 
         try { 
             // set multicast ip
-            multicastAddress = InetAddress.getByName("239.255.255.250");
+            multicastAddress = InetAddress.getByName("ff02::1");
 
             // create socket
             socket = new MulticastSocket(multicastPort);
@@ -29,8 +30,10 @@ public class Main {
             // reuse address
             socket.setReuseAddress(true);
 
+            // setting for ASM IPv6
+            NetworkInterface networkInterface = NetworkInterface.getByName("ff02::1");
             // join ASM
-            socket.joinGroup(multicastAddress);
+            socket.joinGroup(multicastAddress, networkInterface);
 
             // receive
             buf = new byte[1024];

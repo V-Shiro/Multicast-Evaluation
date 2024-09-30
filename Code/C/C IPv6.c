@@ -62,7 +62,7 @@ int main() {
     mreq.imr_multiaddr.s_addr = inet_addr(group);
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
     
-    if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
+    if (setsockopt(fd, IPPROTO_IPV6, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("setsockopt");
         return 1;
     }
@@ -79,7 +79,12 @@ int main() {
         }
         msgbuf[nbytes] = '\0';
         printf(msgbuf);
-     }
+    }
+
+    if (setsockopt(fd, IPPROTO_IPV6, IP_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
+        printf("drop membership");
+        return 1;
+    }
 
     // Clean up
 #ifdef _WIN32
