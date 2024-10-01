@@ -34,4 +34,6 @@ loop do
     puts "Received message from a different source: #{info[3]}, ignoring..."
   end
 end
+
+socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_DROP_SOURCE_MEMBERSHIP, mcast_opt)
 socket.close

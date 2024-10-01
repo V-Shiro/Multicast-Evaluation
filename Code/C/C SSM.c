@@ -81,6 +81,8 @@ int main() {
         printf(msgbuf);
     }
 
+    // drop membership
+    setsockopt(fd, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     // Clean up
 #ifdef _WIN32
     WSACleanup();
