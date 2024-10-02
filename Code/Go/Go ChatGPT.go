@@ -46,8 +46,6 @@ func main() {
 	// Set the buffer size for receiving messages.
 	conn.SetReadBuffer(1024)
 
-	fmt.Printf("Listening for multicast messages on %s:%s...\n", multicastGroupIP, multicastPort)
-
 	// Start receiving messages in a loop.
 	buffer := make([]byte, 1024)
 	for {

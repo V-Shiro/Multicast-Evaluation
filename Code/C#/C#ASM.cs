@@ -39,6 +39,7 @@ class MulticastReceiver {
             // Display message
             Console.WriteLine(receivedData);
         }
+        s.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.DropMembership, mcastOption);
         s.Close();
     }
 }

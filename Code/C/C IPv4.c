@@ -80,7 +80,7 @@ int main() {
         msgbuf[nbytes] = '\0';
         printf(msgbuf);
     }
-
+    
     if (setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("drop membership");
         return 1;
