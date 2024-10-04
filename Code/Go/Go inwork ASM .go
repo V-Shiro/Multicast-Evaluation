@@ -14,6 +14,7 @@ Running the Program:
 
 go run multicast_receiver.go
 */
+// https://github.com/jeroendk/go-tcp-udp/blob/master/udpclient/main.go
 
 package main
 
