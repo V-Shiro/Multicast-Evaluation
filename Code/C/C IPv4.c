@@ -18,7 +18,7 @@
 
 int main() {
     char* group = "127.0.0.1"; // e.g. 239.255.255.250 for SSDP
-    int port = 12345; // 0 if error, which is an invalid port
+    int port = 12345;          // 0 if error, which is an invalid port
 
     // Initialize Windows Socket API with given VERSION.
 #ifdef _WIN32

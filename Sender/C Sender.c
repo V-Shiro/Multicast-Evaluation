@@ -1,3 +1,5 @@
+// https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
     #include <Ws2tcpip.h> // needed for ip_mreq definition for multicast
@@ -14,16 +16,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char *argv[])
-{
-    if (argc != 3) {
-       printf("Command line args should be multicast group and port\n");
-       printf("(e.g. for SSDP, `sender 239.255.255.250 1900`)\n");
-       return 1;
-    }
+int main(int argc, char *argv[]){
 
-    char* group = argv[1]; // e.g. 239.255.255.250 for SSDP
-    int port = atoi(argv[2]); // 0 if error, which is an invalid port
+    char* group = "127.0.0.1"; 
+    int port = 12345; 
 
     // test message with delay
     //
