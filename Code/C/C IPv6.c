@@ -18,8 +18,8 @@
 #define MSGBUFSIZE 256
 
 int main() {
-    char* group = "127.0.0.1"; // e.g. 239.255.255.250 for SSDP
-    int port = 12345; // 0 if error, which is an invalid port
+    char* group = "ff05::c"; // e.g. ff05::c for SSDP 
+    int port = 1900;        // 0 if error, which is an invalid port
 
 #ifdef _WIN32
     // Initialize Windows Socket API with given VERSION.
@@ -63,7 +63,7 @@ int main() {
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
     
     if (setsockopt(fd, IPPROTO_IPV6, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
-        printf("setsockopt");
+        printf("add membership");
         return 1;
     }
 
@@ -78,7 +78,7 @@ int main() {
             return 1;
         }
         msgbuf[nbytes] = '\0';
-        printf(msgbuf);
+        puts(msgbuf);
     }
 
     if (setsockopt(fd, IPPROTO_IPV6, IP_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){

@@ -16,9 +16,9 @@
 #include <string.h> //memset
 
 #define MSGBUFSIZE 256
-#define GROUP "232.1.1.1"  // Example multicast group (SSM range 232.0.0.0/8)
-#define PORT 12345          // Example port number
-#define SOURCE "192.168.1.10" // Example source address (SSM source)
+#define GROUP "239.255.255.250" // Example multicast group (SSM range 232.0.0.0/8)
+#define PORT 1900               // Example port number
+#define SOURCE "127.0.0.1"      // Example source address (SSM source)
 
 int main() {
     // Initialize Windows Socket API with given VERSION.
@@ -78,7 +78,7 @@ int main() {
             return 1;
         }
         msgbuf[nbytes] = '\0';
-        printf(msgbuf);
+        puts(msgbuf);
     }
 
     // drop membership
