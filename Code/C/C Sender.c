@@ -18,19 +18,16 @@
 
 int main(int argc, char *argv[]){
 
-
     char* group = "239.255.255.250"; 
-    int port = 12345; 
+    int port = 1900; 
 
     // test message with delay
-    //
     const int delay_secs = 1;
     const char *message = "Hello, World!";
 
 #ifdef _WIN32
     
     // Initialize Windows Socket API with given VERSION.
-    //
     WSADATA wsaData;
     if (WSAStartup(0x0101, &wsaData)) {
         perror("WSAStartup");
@@ -38,16 +35,21 @@ int main(int argc, char *argv[]){
     }
 #endif
 
-    // create what looks like an ordinary UDP socket
-    //
+    // create UDP socket for multicast
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
     if (fd < 0) {
         perror("socket");
         return 1;
     }
 
+    // allow multiple sockets to use the same PORT number
+    u_int yes = 1;
+    if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*) &yes, sizeof(yes)) < 0){
+        printf("Reusing ADDR failed");
+        return 1;
+    }
+
     // set up destination address
-    //
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
@@ -55,7 +57,6 @@ int main(int argc, char *argv[]){
     addr.sin_port = htons(port);
 
     // now just sendto() our destination!
-    //
     while (1) {
         char ch = 0;
         int nbytes = sendto(fd, message, strlen(message), 0, (struct sockaddr*) &addr, sizeof(addr));

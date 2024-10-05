@@ -17,8 +17,9 @@
 #define MSGBUFSIZE 256
 
 int main() {
-    char* group = "127.0.0.1"; // e.g. 239.255.255.250 for SSDP
-    int port = 12345;          // 0 if error, which is an invalid port
+
+    char* group = "239.255.255.250"; // e.g. 239.255.255.250 for SSDP
+    int port = 1900;                // 0 if error, which is an invalid port
 
     // Initialize Windows Socket API with given VERSION.
 #ifdef _WIN32
@@ -78,7 +79,7 @@ int main() {
             return 1;
         }
         msgbuf[nbytes] = '\0';
-        printf(msgbuf);
+        puts(msgbuf);
     }
     
     if (setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
