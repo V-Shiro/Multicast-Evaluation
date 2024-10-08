@@ -22,8 +22,8 @@ class MulticastReceiver
 {
     static void Main() {
 
-        IPAddress multicastGroupIP = IPAddress.Parse("239.0.0.222"); //multicast group
-        int multicastPort = 12345; //multicast port
+        IPAddress multicastGroupIP = IPAddress.Parse("239.255.255.250"); //multicast group
+        int multicastPort = 1900; //multicast port
         IPAddress sourceIP = IPAddress.Parse("239.255.255.250"); // source IP
 
         // create UDP socket for multicast

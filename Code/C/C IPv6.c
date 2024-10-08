@@ -1,4 +1,5 @@
 //Source used: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//Source: https://github.com/bjornl/ipv6_multicast_example/blob/master/ipv6_multicast_recv/ipv6_multicast_recv.c
 
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
@@ -58,9 +59,9 @@ int main() {
     }
 
     // join Multicast Group with membership
-    struct ip_mreq mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(group);
-    mreq.imr_interface.s_addr = htonl(INADDR_ANY);
+    struct ipv6_mreq mreq;
+    mreq.ipv6mr_multiaddr.in6_addr = inet_addr(group);
+    mreq.ipv6mr_interface.s_addr = htonl(INADDR_ANY);
     
     if (setsockopt(fd, IPPROTO_IPV6, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("add membership");

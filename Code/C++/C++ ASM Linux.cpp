@@ -10,8 +10,8 @@
 #include <cstring>      // For memset
 
 
-int port = 4321;
-const char* multicastGroupIP = "226.1.1.1";
+int port = 1900;
+const char* multicastGroupIP = "239.255.255.250";
 
 int main(){
     /* Create a datagram socket on which to receive. */

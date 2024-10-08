@@ -9,8 +9,8 @@ using System.Text;
 class MulticastReceiver {
     static void Main() {
 
-        IPAddress multicastGroupIP = IPAddress.Parse("224.1.1.1"); 
-        int multicastPort = 2000; 
+        IPAddress multicastGroupIP = IPAddress.Parse("239.255.255.250"); 
+        int multicastPort = 1900; 
 
         // create UDP socket for multicast
         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

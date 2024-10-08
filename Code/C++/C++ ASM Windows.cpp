@@ -7,9 +7,9 @@
 
 #pragma comment(lib,"WS2_32") //block comment warning
 
-int Port = 8910;
+int Port = 1900;
 #define UDP_MAX_SIZE 65535
-std::string IP = "234.5.6.7";
+std::string IP = "239.255.255.250";
 int optval = 0;
 
 int main(){

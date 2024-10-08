@@ -17,8 +17,8 @@
 #include <cstdio>       //print
 
 #define MSGBUFSIZE 256
-int port = 4321;
-const char* multicastGroupIP = "226.1.1.1";
+int port = 1900;
+const char* multicastGroupIP = "239.255.255.250";
 
 int main() {
 
@@ -85,7 +85,7 @@ int main() {
             return 1;
         }
         msgbuf[nbytes] = '\0';
-        printf(msgbuf);
+        puts(msgbuf);
     }
 
     // Clean up

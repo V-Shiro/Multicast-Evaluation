@@ -18,7 +18,9 @@
 
 int main(int argc, char *argv[]){
 
-    char* group = "239.255.255.250"; 
+    //char* group = "239.255.255.250"; 
+    char* group = "232.0.0.0";
+    //char* group = "ff05::c";
     int port = 1900; 
 
     // test message with delay
