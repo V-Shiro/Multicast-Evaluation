@@ -10,8 +10,8 @@ using System.Text;
 class MulticastReceiver {
     static void Main() {
         //IPv6 IP
-        IPAddress multicastGroupIP = IPAddress.Parse("ff02::1"); 
-        int multicastPort = 2000; 
+        IPAddress multicastGroupIP = IPAddress.Parse("ff05::c"); 
+        int multicastPort = 1900; 
 
         // create UDP socket for multicast with IPv6
         Socket s = new Socket(AddressFamily.InterNetworkV6, SocketType.Dgram, ProtocolType.Udp);
@@ -41,6 +41,7 @@ class MulticastReceiver {
             // Display message
             Console.WriteLine(receivedData);
         }
+        s.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.DropMembership, mcastOption);
         s.Close();
     }
 }

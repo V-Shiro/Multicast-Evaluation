@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 
     // test message with delay
     const int delay_secs = 1;
-    const char *message = "Hello, World!";
+    const char *message = "Tobias!";
 
 #ifdef _WIN32
     
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
     // set up destination address
     struct sockaddr_in6 addr;
     memset(&addr, 0, sizeof(addr));
-    addr.sin6_family = AF_INET;
+    addr.sin6_family = AF_INET6;
     inet_pton(AF_INET6, group, &addr.sin6_addr);
     addr.sin6_port = htons(port);
 

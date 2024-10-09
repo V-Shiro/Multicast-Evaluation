@@ -11,7 +11,7 @@ class MulticastReceiver {
     static void Main() {
         //IPv6 IP
         IPAddress multicastGroupIP = IPAddress.Parse("ff02::1"); 
-        int multicastPort = 2000; 
+        int multicastPort = 1900; 
 
         // create UDP socket for multicast with IPv6
         UdpClient s = new UdpClient(AddressFamily.InterNetworkV6);

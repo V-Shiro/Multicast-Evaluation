@@ -1,4 +1,5 @@
 //Source used: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//Source: https://github.com/bjornl/ipv6_multicast_example/blob/master/ipv6_multicast_recv/ipv6_multicast_recv.c
 
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
@@ -7,8 +8,8 @@
     #include <io.h> //close
 #else
     #include <sys/types.h>
-    #include <sys/socket.h> 
-    #include <netinet/in.h> 
+    #include <sys/socket.h>
+    #include <netinet/in.h>
     #include <arpa/inet.h>
     #include <unistd.h> //close
 #endif
@@ -16,23 +17,22 @@
 #include <string.h> //memset
 
 #define MSGBUFSIZE 256
-//#define GROUP "232.0.0.0"       // Example multicast group (SSM range 232.0.0.0/8)
-#define GROUP "ff05::c"
-#define PORT 1900               // Example port number
-#define SOURCE "172.26.159.103"  // Example source address (SSM source)
 
 int main() {
-    // Initialize Windows Socket API with given VERSION.
+    char* group = "ff05::c"; // e.g. ff05::c for SSDP 
+    int port = 1900;        // 0 if error, which is an invalid port
+
 #ifdef _WIN32
+    // Initialize Windows Socket API with given VERSION.
     WSADATA wsaData;
-    if (WSAStartup(0x0101, &wsaData)) { // mVersionRequired, IpWSAData 
+    if (WSAStartup(0x0101, &wsaData)) { // mVersionRequired, IpWSAData
         printf("WSAStartup");
         return 1;
     }
 #endif
 
-    // create UDP Socket for Multicast
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    // create UDP socket (IPv6) for Multicast
+    int fd = socket(AF_INET6, SOCK_DGRAM, 0);
     if (fd < 0) {
         printf("socket");
         return 1;
@@ -45,31 +45,27 @@ int main() {
         return 1;
     }
 
-    // Bind to the specified port
-    struct sockaddr_in addr;
+    //set address family to IPv6
+    struct sockaddr_in6 addr;
     memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(PORT);
-    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin6_family = AF_INET6;
+    addr.sin6_port = htons(port);
+    addr.sin6_addr = in6addr_any; 
 
-    if (bind(fd, (struct sockaddr*) &addr, sizeof(addr)) < 0) {
+    // Bind the socket to the specified port
+    if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
         printf("bind");
         return 1;
     }
 
-    // Join the multicast group with a specific source (SSM)
-    struct ip_mreq_source mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(GROUP);  // Multicast group address
-    mreq.imr_sourceaddr.s_addr = inet_addr(SOURCE);  // Specific source address
-    mreq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
-
-    if (setsockopt(fd, IPPROTO_IP, IP_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
-        printf("setsockopt");
-        return 1;
-    }
+    // join Multicast Group with membership
+    struct ipv6_mreq mreq;
+    inet_pton(AF_INET6, group, &mreq.ipv6mr_multiaddr);
+    mreq.ipv6mr_interface = htonl(INADDR_ANY);
+    setsockopt(fd, IPPROTO_IPV6, IPV6_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
 
     // receive loop
-    printf("Receiving on port %d...\n", PORT);
+    printf("Receiving on port %d...\n", port);
     while (1) {
         char msgbuf[MSGBUFSIZE];
         int addrlen = sizeof(addr);
@@ -81,9 +77,8 @@ int main() {
         msgbuf[nbytes] = '\0';
         puts(msgbuf);
     }
+    setsockopt(fd, IPPROTO_IPV6, IPV6_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
 
-    // drop membership
-    setsockopt(fd, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     // Clean up
 #ifdef _WIN32
     WSACleanup();

@@ -15,9 +15,10 @@
 #include <stdio.h> //printf
 #include <string.h> //memset
 
+// NOT SUPPORTED
+
 #define MSGBUFSIZE 256
-//#define GROUP "232.0.0.0"       // Example multicast group (SSM range 232.0.0.0/8)
-#define GROUP "ff05::c"
+#define GROUP "ff05::c"       // Example multicast group (SSM range 232.0.0.0/8)
 #define PORT 1900               // Example port number
 #define SOURCE "172.26.159.103"  // Example source address (SSM source)
 
@@ -32,7 +33,7 @@ int main() {
 #endif
 
     // create UDP Socket for Multicast
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    int fd = socket(AF_INET6, SOCK_DGRAM, 0);
     if (fd < 0) {
         printf("socket");
         return 1;
@@ -46,11 +47,11 @@ int main() {
     }
 
     // Bind to the specified port
-    struct sockaddr_in addr;
+    struct sockaddr_in6 addr;
     memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(PORT);
-    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin6_family = AF_INET6;
+    addr.sin6_port = htons(PORT);
+    addr.sin6_addr = in6addr_any;
 
     if (bind(fd, (struct sockaddr*) &addr, sizeof(addr)) < 0) {
         printf("bind");
@@ -63,8 +64,9 @@ int main() {
     mreq.imr_sourceaddr.s_addr = inet_addr(SOURCE);  // Specific source address
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
 
-    if (setsockopt(fd, IPPROTO_IP, IP_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
-        printf("setsockopt");
+    int error = setsockopt(fd, IPPROTO_IPV6, IP_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
+    if (error < 0) {
+        printf("setsockopt %d", error);
         return 1;
     }
 
