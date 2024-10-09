@@ -20,7 +20,7 @@ class MulticastReceiver {
         s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         
         // bind socket IPAddress.Any can be replaced with local IP
-        EndPoint localEP = (EndPoint)new IPEndPoint(IPAddress.IPv6Any, multicastPort);
+        IPEndPoint localEP = new IPEndPoint(IPAddress.IPv6Any, multicastPort);
         s.Bind(localEP);
 
         //join multicast group (ASM) with IPv6
@@ -30,7 +30,7 @@ class MulticastReceiver {
         // receiving
         byte[] bytes = new Byte[1024];
         //IPEndPoint groupEP = new(multicastGroupIP, multicastPort);
-        EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
+        IPEndPoint remoteEP = new IPEndPoint(IPAddress.IPv6Any, 0);
         while (true) {
             // Receive the message.
             int nbytes = s.ReceiveFrom(bytes, ref remoteEP);
