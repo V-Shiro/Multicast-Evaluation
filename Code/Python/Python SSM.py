@@ -15,8 +15,8 @@ import sys
 # For Python >= 3 "print(...)"
 # For Python < 3 "print ..."
 
-MCAST_GRP = '224.1.1.1'
-MCAST_PORT = 5007
+MCAST_GRP = '232.0.0.0'
+MCAST_PORT = 1900
 SENDER_IP = '239.255.255.250' 
 
 # create UDP socket for multicast

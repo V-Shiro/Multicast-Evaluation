@@ -13,7 +13,7 @@ import sys
 # For Python >= 3 "print(...)"
 # For Python < 3 "print ..."
 
-MCAST_GRP = 'ff02::1'
+MCAST_GRP = 'ff05::c'
 MCAST_PORT = 1900
 
 # create UDP socket for multicast IPv6
