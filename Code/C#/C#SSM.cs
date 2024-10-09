@@ -47,11 +47,11 @@ class MulticastReceiver
             // Receive the message.
             int nbytes = s.ReceiveFrom(bytes, ref remoteEP);
 
-                // Convert the byte array to a string.
-                string receivedData = Encoding.ASCII.GetString(bytes, 0, nbytes);
+            // Convert the byte array to a string.
+            string receivedData = Encoding.ASCII.GetString(bytes, 0, nbytes);
 
-                // Display message
-                Console.WriteLine(receivedData);
+            // Display message
+            Console.WriteLine(receivedData);
         }
         s.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.DropSourceMembership, mcastOption);
         s.Close();

@@ -33,7 +33,7 @@ class MulticastReceiver {
         while (true) {
             // Receive the message.
             //int nbytes = s.ReceiveFrom(bytes, ref remoteEP);
-            int32 nbytes = s.Receive(bytes, bytes.Length, 0);
+            int nbytes = s.Receive(bytes, bytes.Length, 0);
 
             // Convert the byte array to a string.
             string receivedData = Encoding.ASCII.GetString(bytes);
