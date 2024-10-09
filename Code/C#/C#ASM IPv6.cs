@@ -1,5 +1,4 @@
 // Source: https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.multicastoption?view=net-8.0
-// Source: https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.udpclient.joinmulticastgroup?view=net-7.0
 // Source: https://www.webdevtutor.net/blog/c-sharp-multicast-socket-example
 
 using System;
@@ -30,11 +29,11 @@ class MulticastReceiver {
         // receiving
         byte[] bytes = new Byte[1024];
         //IPEndPoint groupEP = new(multicastGroupIP, multicastPort);
-        IPEndPoint remoteEP = new IPEndPoint(IPAddress.IPv6Any, 0);
+        //IPEndPoint remoteEP = new IPEndPoint(IPAddress.IPv6Any, 0);
         while (true) {
             // Receive the message.
             //int nbytes = s.ReceiveFrom(bytes, ref remoteEP);
-            bytes = s.Receive(ref remoteEP);
+            int32 nbytes = s.Receive(bytes, bytes.Length, 0);
 
             // Convert the byte array to a string.
             string receivedData = Encoding.ASCII.GetString(bytes);
