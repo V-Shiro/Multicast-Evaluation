@@ -33,10 +33,11 @@ class MulticastReceiver {
         IPEndPoint remoteEP = new IPEndPoint(IPAddress.IPv6Any, 0);
         while (true) {
             // Receive the message.
-            int nbytes = s.ReceiveFrom(bytes, ref remoteEP);
+            //int nbytes = s.ReceiveFrom(bytes, ref remoteEP);
+            bytes = s.Receive(ref remoteEP);
 
             // Convert the byte array to a string.
-            string receivedData = Encoding.ASCII.GetString(bytes, 0, nbytes);
+            string receivedData = Encoding.ASCII.GetString(bytes);
 
             // Display message
             Console.WriteLine(receivedData);
