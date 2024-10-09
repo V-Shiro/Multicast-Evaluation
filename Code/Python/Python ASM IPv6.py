@@ -14,7 +14,7 @@ import sys
 # For Python < 3 "print ..."
 
 MCAST_GRP = 'ff02::1'
-MCAST_PORT = 5007
+MCAST_PORT = 1900
 
 # create UDP socket for multicast IPv6
 s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
