@@ -59,11 +59,21 @@ int main() {
     }
 
     // join Multicast Group with membership
+    struct sockaddr_in6 maddr;
+    memset(&maddr, 0, sizeof(maddr));
+
     struct ipv6_mreq mreq;
-    mreq.ipv6mr_multiaddr.in6_addr = inet_addr(group);
-    mreq.ipv6mr_interface.s_addr = htonl(INADDR_ANY);
     
-    if (setsockopt(fd, IPPROTO_IPV6, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
+    /* inet_pton(AF_INET6, group, &maddr.sin6_addr);
+    memcpy(&mreq.ipv6mr_multiaddr, &maddr.sin6_addr, sizeof(mreq.ipv6mr_multiaddr));
+    */
+
+    //mreq.ipv6mr_multiaddr.sin6_addr = inet_addr(group);
+    inet_pton(AF_INET6, group, &mreq.ipv6mr_multiaddr);
+    
+    mreq.ipv6mr_interface = htonl(INADDR_ANY);
+    
+    if (setsockopt(fd, IPPROTO_IPV6, IPV6_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("add membership");
         return 1;
     }
@@ -82,7 +92,7 @@ int main() {
         puts(msgbuf);
     }
 
-    if (setsockopt(fd, IPPROTO_IPV6, IP_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
+    if (setsockopt(fd, IPPROTO_IPV6, IPV6_DROP_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
         printf("drop membership");
         return 1;
     }

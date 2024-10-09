@@ -21,10 +21,10 @@ int main(int argc, char *argv[]){
     //char* group = "239.255.255.250"; //SSDP
 
     // SSM Range 232.0.0.0 to 232.255.255.255
-    char* group = "232.0.0.0";
+    //char* group = "232.0.0.0";
 
     // IPv6 Range ff00::/8
-    //char* group = "ff05::c";
+    char* group = "ff05::c";
 
     int port = 1900; 
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 #endif
 
     // create UDP socket for multicast
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    int fd = socket(AF_INET6, SOCK_DGRAM, 0);
     if (fd < 0) {
         perror("socket");
         return 1;
@@ -57,11 +57,11 @@ int main(int argc, char *argv[]){
     }
 
     // set up destination address
-    struct sockaddr_in addr;
+    struct sockaddr_in6 addr;
     memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = inet_addr(group);
-    addr.sin_port = htons(port);
+    addr.sin6_family = AF_INET;
+    inet_pton(AF_INET6, group, &addr.sin6_addr);
+    addr.sin6_port = htons(port);
 
     // now just sendto() our destination!
     while (1) {
