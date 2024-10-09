@@ -7,8 +7,8 @@
 require 'socket'
 require 'ipaddr'
 
-MULTICAST_ADDR = "225.4.5.6" 
-PORT = 5000
+MULTICAST_ADDR = "232.0.0.0" 
+PORT = 1900
 SOURCE_ADDR = "192.168.1.100"
 
 # Create a UDP socket

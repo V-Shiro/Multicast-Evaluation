@@ -6,8 +6,8 @@
 require 'socket'
 require 'ipaddr'
 
-MULTICAST_ADDR = "225.0.0.1" 
-PORT = 5000
+MULTICAST_ADDR = "239.255.255.250" 
+PORT = 1900
 
 # create UDP socket for multicast
 s = UDPSocket.new
@@ -26,6 +26,6 @@ s.setsockopt( :IPPROTO_IP,  :IP_ADD_MEMBERSHIP, mcast_opt)
 loop do
   msg, info = s.recvfrom(1024)
   puts msg
-enda
+end
 s.setsockopt( :IPPROTO_IP,  :IP_DROP_MEMBERSHIP, mcast_opt)
 s.close
