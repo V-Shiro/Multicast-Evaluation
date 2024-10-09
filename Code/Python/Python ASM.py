@@ -21,17 +21,20 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # listen to MCAST_GRP
-s.bind((MCAST_GRP, MCAST_PORT))
+s.bind(('', MCAST_PORT))
 
 # ASM
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
+# receive
 while True:
-  data = s.recv(10240)
+  data = s.recv(1024)
   message = data.decode('utf-8')
   print(message)
 
+# drop membership
 s.setsockopt(socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq)
 
+# close socket
 s.close()

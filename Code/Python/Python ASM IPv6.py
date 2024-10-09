@@ -26,7 +26,7 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind((MCAST_GRP, MCAST_PORT))
 
 # ASM for IPv6
-mreq = struct.pack("16sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
+mreq = struct.pack("16sl", socket.inet_pton(socket.AF_INET6, MCAST_GRP), socket.INADDR_ANY)
 s.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_JOIN_GROUP, mreq)
 
 while True:
@@ -34,6 +34,6 @@ while True:
   message = data.decode('utf-8')
   print(message)
 
-s.setsockopt(socket.IPPROTO_IPV6, socket.IP_DROP_MEMBERSHIP, mreq)
+s.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_LEAVE_GROUP, mreq)
 
 s.close()

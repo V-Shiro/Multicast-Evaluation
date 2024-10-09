@@ -22,7 +22,7 @@ class MulticastReceiver
 {
     static void Main() {
 
-        IPAddress multicastGroupIP = IPAddress.Parse("239.255.255.250"); //multicast group
+        IPAddress multicastGroupIP = IPAddress.Parse("232.0.0.0"); //multicast group
         int multicastPort = 1900; //multicast port
         IPAddress sourceIP = IPAddress.Parse("239.255.255.250"); // source IP
 

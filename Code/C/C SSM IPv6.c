@@ -15,8 +15,6 @@
 #include <stdio.h> //printf
 #include <string.h> //memset
 
-// NOT SUPPORTED
-
 #define MSGBUFSIZE 256
 #define GROUP "ff05::c"       // Example multicast group (SSM range 232.0.0.0/8)
 #define PORT 1900               // Example port number
@@ -60,13 +58,13 @@ int main() {
 
     // Join the multicast group with a specific source (SSM)
     struct ip_mreq_source mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(GROUP);  // Multicast group address
-    mreq.imr_sourceaddr.s_addr = inet_addr(SOURCE);  // Specific source address
+    inet_pton(AF_INET6, GROUP, &mreq.imr_multiaddr);   // Multicast group address
+    inet_pton(AF_INET6, SOURCE, &mreq.imr_sourceaddr); // Specific source address
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
 
     int error = setsockopt(fd, IPPROTO_IPV6, IP_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     if (error < 0) {
-        printf("setsockopt %d", error);
+        printf("add membership %d", error);
         return 1;
     }
 
@@ -85,7 +83,7 @@ int main() {
     }
 
     // drop membership
-    setsockopt(fd, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
+    setsockopt(fd, IPPROTO_IPV6, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     // Clean up
 #ifdef _WIN32
     WSACleanup();

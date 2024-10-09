@@ -10,7 +10,7 @@ using System.Text;
 class MulticastReceiver {
     static void Main() {
         //IPv6 IP
-        IPAddress multicastGroupIP = IPAddress.Parse("ff02::1"); 
+        IPAddress multicastGroupIP = IPAddress.Parse("ff05::c"); 
         int multicastPort = 1900; 
 
         // create UDP socket for multicast with IPv6
