@@ -21,7 +21,7 @@ public class Main {
 
         try { 
             // set multicast ip
-            multicastAddress = InetAddress.getByName("239.255.255.250");
+            multicastAddress = InetAddress.getByName("232.0.0.0");
 
             // create socket
             socket = new MulticastSocket(multicastPort);
@@ -36,14 +36,9 @@ public class Main {
             buf = new byte[1024];
             packet = new DatagramPacket(buf, buf.length);
             while (Thread.currentThread().isInterrupted()) {
-
                 socket.receive(packet);
-
                 String received = new String(packet.getData(), 0, packet.getLength());
                 System.out.println(received);
-                if ("end".equals(received)) {
-                    break;
-                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

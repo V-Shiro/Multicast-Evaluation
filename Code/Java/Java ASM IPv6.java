@@ -22,7 +22,7 @@ public class Main {
 
         try { 
             // set multicast ip
-            multicastAddress = InetAddress.getByName("ff02::1");
+            multicastAddress = InetAddress.getByName("ff05::c");
 
             // create socket
             socket = new MulticastSocket(multicastPort);
@@ -31,9 +31,10 @@ public class Main {
             socket.setReuseAddress(true);
 
             // setting for ASM IPv6
-            NetworkInterface networkInterface = NetworkInterface.getByName("ff02::1");
+            NetworkInterface networkInterface = NetworkInterface.getByName("ff05::c");
             // join ASM
             socket.joinGroup(multicastAddress, networkInterface);
+            //socket.joinGroup(multicastAddress);
 
             // receive
             buf = new byte[1024];
