@@ -28,11 +28,7 @@ socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_ADD_SOURCE_MEMBERSHIP, mcast_op
 # receive and check for source
 loop do
     msg, info = socket.recvfrom(1024)
-  if info[3] == SOURCE_ADDR # Check if the message is from the specified source
     puts msg
-  else
-    puts "Received message from a different source: #{info[3]}, ignoring..."
-  end
 end
 
 socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_DROP_SOURCE_MEMBERSHIP, mcast_opt)
