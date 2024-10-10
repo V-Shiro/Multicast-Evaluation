@@ -23,7 +23,7 @@ s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # listen to MCAST_GRP
-s.bind((MCAST_GRP, MCAST_PORT))
+s.bind(('', MCAST_PORT))
 
 # ASM for IPv6
 mreq = struct.pack("16sl", socket.inet_pton(socket.AF_INET6, MCAST_GRP), socket.INADDR_ANY)
