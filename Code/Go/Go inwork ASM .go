@@ -1,19 +1,3 @@
-/*How It Works:
-
-    Multicast Group & Port: The multicast group IP and port are defined as variables at the beginning of the program.
-    UDP Address Resolution: The program resolves the multicast address and port into a UDPAddr.
-    Multicast Listening: The program uses net.ListenMulticastUDP to start listening for messages on the specified address.
-    Receiving Messages: It continuously listens for incoming messages and prints them to the console.
-
-Running the Program:
-
-    Save the code to a .go file, for example multicast_receiver.go.
-    Run the program using the Go command:
-
-    bash
-
-go run multicast_receiver.go
-*/
 // https://github.com/jeroendk/go-tcp-udp/blob/master/udpclient/main.go
 
 package main
