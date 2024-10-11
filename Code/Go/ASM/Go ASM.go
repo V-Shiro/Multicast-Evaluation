@@ -15,7 +15,8 @@ import (
 // from that address to a buffer which is passed to a hander
 func Listen(handler func(*net.UDPAddr, int, []byte)) {
 	// Parse the string address
-	var address string = "250.0.0.1:12345"
+	var address string = "232.0.0.0:1900"
+	//var address string = "ff05::c:1900"
 
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
