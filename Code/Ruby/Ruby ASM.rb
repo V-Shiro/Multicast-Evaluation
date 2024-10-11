@@ -16,7 +16,6 @@ s = UDPSocket.new
 
 # reuse address
 s.setsockopt( :SOL_SOCKET,  :SO_REUSEADDR, true)
-# s.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, true)
 
 # bind to port
 s.bind("0.0.0.0", PORT)
@@ -24,7 +23,6 @@ s.bind("0.0.0.0", PORT)
 # ASM
 mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("0.0.0.0").hton
 s.setsockopt( :IPPROTO_IP,  :IP_ADD_MEMBERSHIP, mcast_opt)
-# s.setsockopt(Socket::IPPROTO_IP, Socket::IP_ADD_MEMBERSHIP, mcast_opt)
 
 # receive
 loop do
@@ -32,5 +30,4 @@ loop do
   puts msg
 end
 s.setsockopt( :IPPROTO_IP,  :IP_DROP_MEMBERSHIP, mcast_opt)
-# s.setsockopt(Socket::IPPROTO_IP, Socket::IP_DROP_MEMBERSHIP, mcast_opt)
 s.close
