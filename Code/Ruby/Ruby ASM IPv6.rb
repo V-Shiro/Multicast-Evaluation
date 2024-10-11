@@ -10,7 +10,7 @@ MULTICAST_ADDR = "ff05::c"
 PORT = 1900
 
 # create UDP socket for multicast
-s = UDPSocket.new
+s = UDPSocket.new( :AF_INET6)
 
 # reuse address
 s.setsockopt( :SOL_SOCKET,  :SO_REUSEADDR, true)
