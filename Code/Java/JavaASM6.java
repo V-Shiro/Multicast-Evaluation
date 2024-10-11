@@ -10,7 +10,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 
-public class Main { 
+public class JavaASM6 { 
     public static void main(String[] args){
 
         // port and multicast IP

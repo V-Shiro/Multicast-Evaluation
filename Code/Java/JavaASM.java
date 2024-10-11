@@ -9,7 +9,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class Main { 
+public class JavaASM { 
     public static void main(String[] args){
 
         // port and multicast IP
