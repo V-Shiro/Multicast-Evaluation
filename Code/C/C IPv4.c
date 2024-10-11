@@ -37,7 +37,7 @@ int main() {
         return 1;
     }
 
-    // allow multiple sockets to use the same PORT number
+    // allow multiple sockets to use the same address
     u_int yes = 1;
     if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*) &yes, sizeof(yes)) < 0){
         printf("Reusing ADDR failed");

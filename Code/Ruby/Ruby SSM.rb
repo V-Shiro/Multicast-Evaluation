@@ -14,8 +14,8 @@ SOURCE_ADDR = "192.168.1.100"
 # Create a UDP socket
 socket = UDPSocket.new
 
-# reuse port
-socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEPORT, true)
+# reuse address
+socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, true)
 
 # bind
 socket.bind(Socket::INADDR_ANY, PORT)

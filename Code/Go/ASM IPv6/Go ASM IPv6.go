@@ -28,7 +28,10 @@ func Listen(handler func(*net.UDPAddr, int, []byte)) {
 		log.Fatal(err)
 	}
 
-	if err := conn.SetReuseADDress(true); err != nil {
+	if err := conn.SetReuseAddr(true); err != nil {
+		log.Fatal(err)
+	}
+	if err := conn.SetControlMessage(net.FlagInterface, true); err != nil {
 		log.Fatal(err)
 	}
 
