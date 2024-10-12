@@ -2,8 +2,6 @@
 # https://rubyapi.org/o/socket
 # https://www.rubydoc.info/stdlib/socket/Socket
 
-# SSM not supported
-
 require 'socket'
 require 'ipaddr'
 

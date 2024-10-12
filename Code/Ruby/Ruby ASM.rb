@@ -7,7 +7,6 @@ require 'socket'
 require 'ipaddr'
 
 MULTICAST_ADDR = "232.0.0.0" 
-# MULTICAST_ADDR = "ff05::c" 
 
 PORT = 1900
 
