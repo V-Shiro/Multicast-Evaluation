@@ -5,3 +5,6 @@ https://github.com/bluejekyll/multicast-example
 
 // Beispiel für IPv4 und IPv6
 https://github.com/jmatss/multicast/blob/master/src/main.rs
+
+// reuseaddress and more
+https://github.com/rust-lang/socket2/blob/master/src/socket.rs
