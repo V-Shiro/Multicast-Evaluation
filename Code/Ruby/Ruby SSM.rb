@@ -18,11 +18,11 @@ socket = UDPSocket.new
 socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, true)
 
 # bind
-socket.bind(Socket::INADDR_ANY, PORT)
+socket.bind("0.0.0.0", PORT)
 
 
 # SSM (not supported)
-mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new(INADDR_ANY).hton + IPAddr.new(SOURCE_ADDR).hton
+mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("0.0.0.0").hton + IPAddr.new(SOURCE_ADDR).hton
 socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_ADD_SOURCE_MEMBERSHIP, mcast_opt)
 
 # receive and check for source
