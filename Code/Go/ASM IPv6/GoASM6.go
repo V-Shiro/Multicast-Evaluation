@@ -12,12 +12,11 @@ import (
 	"net"
 )
 
-// Listen binds to the UDP address and port given and writes packets received
-// from that address to a buffer which is passed to a hander
 func main() {
-	// Parse the string address
+	// multicast address and port
 	var address string = "[ff05::c]:1900"
 
+	// multicast address and port to IPv6 UDP address
 	addr, err := net.ResolveUDPAddr("udp6", address)
 	if err != nil {
 		log.Fatal(err)
@@ -28,22 +27,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	/* if err := conn.SetReuseAddr(true); err != nil {
-		log.Fatal(err)
-	}
-	if err := conn.SetControlMessage(net.FlagInterface, true); err != nil {
-		log.Fatal(err)
-	} */
-
+	// clean up
 	defer conn.Close()
 
-	const maxDatagramSize = 8192
-	conn.SetReadBuffer(1024)
-
 	// receiving
+	conn.SetReadBuffer(1024)
 	for {
-		buffer := make([]byte, maxDatagramSize)
+		buffer := make([]byte, 8192)
 		numBytes, src, err := conn.ReadFromUDP(buffer)
 		if err != nil {
 			log.Fatal("ReadFromUDP failed:", err)
@@ -53,6 +43,6 @@ func main() {
 		fmt.Println("numBytes: ", numBytes)
 
 		str1 := string(buffer[:])
-		fmt.Println("buffer: ", str1)
+		fmt.Println("Message: ", str1)
 	}
 }
