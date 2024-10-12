@@ -7,14 +7,13 @@ use std::str;
 
 fn main() -> std::io::Result<()> {
     // Multicast address 
-    let multicastAddr = Ipv6Addr::new(0xff, 0, 0, 0, 0, 0, 0, 0xc);
+    let multicastAddr = Ipv6Addr::new(0xff05, 0, 0, 0, 0, 0, 0, 0xc);
     
     // Create a UDP socket
     let socket = UdpSocket::bind("[::]:1900")?;
 
     // add multicast membership
-    let netInt = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0);
-    socket.join_multicast_v6(multicastAddr, netInt)?;
+    socket.join_multicast_v6(&multicastAddr, 0)?;
 
     let mut buf = [0; 1024];
     loop {
@@ -23,5 +22,5 @@ fn main() -> std::io::Result<()> {
         println!("Received {} bytes from {}: {}", len, src, msg);
     }
     // drop membership
-    socket.leave_multicast_v6(multicastAddr, netInt)?;
+    socket.leave_multicast_v6(&multicastAddr, 0)?;
 }

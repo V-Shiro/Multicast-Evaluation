@@ -20,7 +20,6 @@ s.bind("::", PORT)
 
 # ASM
 mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("::").hton
-# s.setsockopt( :IPPROTO_IP,  :IP_ADD_MEMBERSHIP, mcast_opt) 
 s.setsockopt( :IPPROTO_IPV6,  :IPV6_JOIN_GROUP, mcast_opt) 
 
 # receive
@@ -28,6 +27,6 @@ loop do
   msg, info = s.recvfrom(1024)
   puts msg
 end
-# s.setsockopt( :IPPROTO_IP,  :IP_DROP_MEMBERSHIP, mcast_opt)
+
 s.setsockopt( :IPPROTO_IPV6,  :IPV6_LEAVE_GROUP, mcast_opt)
 s.close

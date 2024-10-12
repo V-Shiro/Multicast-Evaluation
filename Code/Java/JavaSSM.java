@@ -35,7 +35,7 @@ public class JavaSSM {
             socket.setReuseAddress(true);
 
             // join SSM
-            socket.joinGroup(multicastAddress, 0, sourceAddress);
+            socket.joinGroup(multicastAddress, 0);
 
             // receive
             buf = new byte[1024];
@@ -44,6 +44,7 @@ public class JavaSSM {
                 socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 System.out.println(received);
+                //filter for source address TODO
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

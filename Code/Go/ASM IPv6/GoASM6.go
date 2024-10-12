@@ -48,9 +48,11 @@ func main() {
 		if err != nil {
 			log.Fatal("ReadFromUDP failed:", err)
 		}
-		message := bytesToString(buffer)
-		fmt.Println(numBytes)
-		fmt.Println()
-		fmt.Println(src)
+
+		fmt.Println("source: ", src)
+		fmt.Println("numBytes: ", numBytes)
+
+		str1 := string(buffer[:])
+		fmt.Println("buffer: ", str1)
 	}
 }
