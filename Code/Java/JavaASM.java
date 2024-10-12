@@ -37,7 +37,7 @@ public class JavaASM {
             // receive
             buf = new byte[1024];
             packet = new DatagramPacket(buf, buf.length);
-            while (Thread.currentThread().isInterrupted()) {
+            while (true) {
                 socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 System.out.println(received);

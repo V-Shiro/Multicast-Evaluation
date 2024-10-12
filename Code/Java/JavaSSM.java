@@ -11,7 +11,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class Main {
+public class JavaSSM {
     public static void main(){
 
         // port, multicast IP, source IP
@@ -40,7 +40,7 @@ public class Main {
             // receive
             buf = new byte[1024];
             packet = new DatagramPacket(buf, buf.length);
-            while (Thread.currentThread().isInterrupted()) {
+            while (true) {
                 socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 System.out.println(received);
