@@ -4,7 +4,7 @@
 // guide: https://pkg.go.dev/golang.org/x/net/ipv4
 
 // udp = IPv4 and IPv6, udp4 = only IPv4, udp6 = only IPv6 //https://pkg.go.dev/net#Dial
-package GoASM
+package main
 
 import (
 	"fmt"
@@ -14,10 +14,10 @@ import (
 
 // Listen binds to the UDP address and port given and writes packets received
 // from that address to a buffer which is passed to a hander
-func main(handler func(*net.UDPAddr, int, []byte)) {
+func main() {
 	// Parse the string address
 	var address string = "232.0.0.0:1900"
-	//var address string = "ff05::c:1900"
+	//var address string = "[ff05::c]:1900"
 
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
@@ -41,8 +41,10 @@ func main(handler func(*net.UDPAddr, int, []byte)) {
 		if err != nil {
 			log.Fatal("ReadFromUDP failed:", err)
 		}
+		fmt.Println("source: ", src)
+		fmt.Println("numBytes: ", numBytes)
 
-		handler(src, numBytes, buffer)
-		fmt.Printf("Source:")
+		str1 := string(buffer[:])
+		fmt.Println("buffer: ", str1)
 	}
 }
