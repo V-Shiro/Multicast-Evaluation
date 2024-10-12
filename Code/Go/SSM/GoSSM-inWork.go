@@ -1,3 +1,5 @@
+// not supported
+
 package main
 
 import (
@@ -32,12 +34,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Set up a buffer to read incoming messages
-	buf := make([]byte, 1024)
-
 	for {
 		// Read from the connection
-		n, cm, srcAddr, err := conn.ReadMsgUDP(buf, nil)
+		//n, cm, srcAddr, err := conn.ReadMsgUDP(buf, nil)
+		buffer := make([]byte, 1024)
+		numBytes, src, err := conn.ReadFromUDP(buffer)
 		if err != nil {
 			fmt.Println("Error reading message:", err)
 			continue
