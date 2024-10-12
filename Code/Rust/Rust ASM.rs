@@ -14,7 +14,7 @@ fn main() -> std::io::Result<()> {
 
     // add multicast membership
     let netInt = Ipv4Addr::new(0, 0, 0, 0);
-    socket.join_multicast_v4(multicastAddr, netInt)?;
+    socket.join_multicast_v4(&multicastAddr, &netInt)?;
 
     let mut buf = [0; 1024];
     loop {
