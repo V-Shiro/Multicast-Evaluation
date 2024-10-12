@@ -16,10 +16,10 @@ s = UDPSocket.new( :AF_INET6)
 s.setsockopt( :SOL_SOCKET,  :SO_REUSEADDR, true)
 
 # bind to port
-s.bind("0.0.0.0", PORT)
+s.bind("::", PORT)
 
 # ASM
-mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("0.0.0.0").hton
+mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("::").hton
 # s.setsockopt( :IPPROTO_IP,  :IP_ADD_MEMBERSHIP, mcast_opt) 
 s.setsockopt( :IPPROTO_IPV6,  :IPV6_JOIN_GROUP, mcast_opt) 
 
