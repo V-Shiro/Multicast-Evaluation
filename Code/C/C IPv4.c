@@ -18,7 +18,7 @@
 
 int main() {
 
-    char* group = "239.255.255.250"; // e.g. 239.255.255.250 for SSDP
+    char* group = "232.0.0.0"; // e.g. 239.255.255.250 for SSDP
     int port = 1900;                // 0 if error, which is an invalid port
 
     // Initialize Windows Socket API with given VERSION.

@@ -16,8 +16,8 @@
 #include <string.h> //memset
 
 #define MSGBUFSIZE 256
-//#define GROUP "232.0.0.0"       // Example multicast group (SSM range 232.0.0.0/8)
-#define GROUP "ff05::c"
+#define GROUP "232.0.0.0"       // Example multicast group (SSM range 232.0.0.0/8)
+//#define GROUP "ff05::c"
 #define PORT 1900               // Example port number
 #define SOURCE "172.26.159.103"  // Example source address (SSM source)
 
@@ -81,7 +81,6 @@ int main() {
         msgbuf[nbytes] = '\0';
         puts(msgbuf);
     }
-
     // drop membership
     setsockopt(fd, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     // Clean up
