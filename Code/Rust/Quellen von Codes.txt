@@ -3,6 +3,9 @@ https://github.com/bluejekyll/multicast-example/blob/master/src/lib.rs
 https://github.com/bluejekyll/multicast-example
 
 
+//setsockopt source code kinda
+https://github.com/kernelslacker/trinity/blob/master/syscalls/setsockopt.c
+
 // Beispiel für IPv4 und IPv6
 https://github.com/jmatss/multicast/blob/master/src/main.rs
 
