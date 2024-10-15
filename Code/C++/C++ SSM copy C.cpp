@@ -17,7 +17,7 @@
 #include <string.h> //memset
 
 #define MSGBUFSIZE 256
-#define GROUP "239.255.255.250"  // Example multicast group (SSM range 232.0.0.0/8)
+#define GROUP "232.0.0.0"  // Example multicast group (SSM range 232.0.0.0/8)
 #define PORT 1900          // Example port number
 #define SOURCE "192.168.1.10" // Example source address (SSM source)
 
@@ -72,17 +72,18 @@ int main() {
     printf("Receiving on port %d...\n", PORT);
     while (1) {
         char msgbuf[MSGBUFSIZE];
-        struct sockaddr_in remoteAddr;
-        socklen_t addrlen = sizeof(remoteAddr);
-        int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &remoteAddr,&addrlen);
+        //struct sockaddr_in remoteAddr;
+        int addrlen = sizeof(addr);
+        int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &addr,&addrlen);
         if (nbytes < 0) {
             printf("recvfrom");
             return 1;
         }
         msgbuf[nbytes] = '\0';
-        printf(msgbuf);
+        puts(msgbuf);
     }
-
+    // drop membership
+    setsockopt(fd, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     // Clean up
 #ifdef _WIN32
     WSACleanup();

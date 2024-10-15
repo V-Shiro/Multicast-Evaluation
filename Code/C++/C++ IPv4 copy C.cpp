@@ -18,7 +18,7 @@
 
 #define MSGBUFSIZE 256
 int port = 1900;
-const char* multicastGroupIP = "239.255.255.250";
+const char* multicastGroupIP = "232.0.0.0";
 
 int main() {
 

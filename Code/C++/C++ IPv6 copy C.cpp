@@ -17,10 +17,10 @@
 #include <string.h>     //memset
 
 #define MSGBUFSIZE 256
-int port = 1900;
-const char* multicastGroupIP = "239.255.255.250";
 
 int main() {
+    char* group = "ff05::c"; // e.g. ff05::c for SSDP 
+    int port = 1900;        // 0 if error, which is an invalid port
 
 #ifdef _WIN32
     // Initialize Windows Socket API with given VERSION.
@@ -42,7 +42,6 @@ int main() {
     u_int yes = 1;
     if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*) &yes, sizeof(yes)) < 0){
         printf("Reusing ADDR failed");
-        close(fd);
         return 1;
     }
 
@@ -56,18 +55,26 @@ int main() {
     // Bind the socket to the specified port
     if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
         printf("bind");
-        close(fd);
         return 1;
     }
 
     // join Multicast Group with membership
-    struct ip_mreq mreq;
-    mreq.imr_multiaddr.s_addr = inet_addr(multicastGroupIP);
-    mreq.imr_interface.s_addr = htonl(INADDR_ANY);
+    struct sockaddr_in6 maddr;
+    memset(&maddr, 0, sizeof(maddr));
+
+    struct ipv6_mreq mreq;
     
-    if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
-        printf("setsockopt");
-        close(fd);
+    /* inet_pton(AF_INET6, group, &maddr.sin6_addr);
+    memcpy(&mreq.ipv6mr_multiaddr, &maddr.sin6_addr, sizeof(mreq.ipv6mr_multiaddr));
+    */
+
+    //mreq.ipv6mr_multiaddr.sin6_addr = inet_addr(group);
+    inet_pton(AF_INET6, group, &mreq.ipv6mr_multiaddr);
+    
+    mreq.ipv6mr_interface = htonl(INADDR_ANY);
+    
+    if (setsockopt(fd, IPPROTO_IPV6, IPV6_JOIN_GROUP, (char*) &mreq, sizeof(mreq)) < 0){
+        printf("add membership");
         return 1;
     }
 
@@ -75,17 +82,22 @@ int main() {
     printf("Receiving on port %d...\n", port);
     while (1) {
         char msgbuf[MSGBUFSIZE];
-        struct sockaddr_in remoteAddr;
-        socklen_t addrlen = sizeof(remoteAddr);
+        struct sockaddr_in6 remoteAddr;
+        int addrlen = sizeof(remoteAddr);
+        //macOS: uint addrlen = (uint)sizeof(remoteAddr);
         int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &remoteAddr,&addrlen);
         if (nbytes < 0) {
             printf("recvfrom");
-            close(fd);
             return 1;
         }
         msgbuf[nbytes] = '\0';
         puts(msgbuf);
-     }
+    }
+
+    if (setsockopt(fd, IPPROTO_IPV6, IPV6_LEAVE_GROUP, (char*) &mreq, sizeof(mreq)) < 0){
+        printf("drop membership");
+        return 1;
+    }
 
     // Clean up
 #ifdef _WIN32
