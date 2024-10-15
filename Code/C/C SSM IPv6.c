@@ -62,7 +62,7 @@ int main() {
     inet_pton(AF_INET6, SOURCE, &mreq.imr_sourceaddr); // Specific source address
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
 
-    int error = setsockopt(fd, IPPROTO_IPV6, IP_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
+    int error = setsockopt(fd, IPPROTO_IPV6, IPV6_ADD_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     if (error < 0) {
         printf("add membership %d", error);
         return 1;
@@ -83,7 +83,7 @@ int main() {
     }
 
     // drop membership
-    setsockopt(fd, IPPROTO_IPV6, IP_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
+    setsockopt(fd, IPPROTO_IPV6, IPV6_DROP_SOURCE_MEMBERSHIP, (char*) &mreq, sizeof(mreq));
     // Clean up
 #ifdef _WIN32
     WSACleanup();

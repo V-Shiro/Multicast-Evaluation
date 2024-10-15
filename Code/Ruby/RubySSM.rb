@@ -7,7 +7,7 @@ require 'ipaddr'
 
 MULTICAST_ADDR = "232.0.0.0" 
 PORT = 1900
-SOURCE_ADDR = "192.168.1.100"
+SOURCE_ADDR = "192.168.56.1"
 
 # Create a UDP socket
 socket = UDPSocket.new

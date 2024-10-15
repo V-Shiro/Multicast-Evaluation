@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+
 	// multicast address and port
 	var address string = "[ff05::c]:1900"
 
@@ -39,8 +40,8 @@ func main() {
 			log.Fatal("ReadFromUDP failed:", err)
 		}
 
-		fmt.Println("source: ", src)
-		fmt.Println("numBytes: ", numBytes)
+		fmt.Printf("source: ", src)
+		fmt.Printf("numBytes: ", numBytes)
 
 		str1 := string(buffer[:])
 		fmt.Println("Message: ", str1)

@@ -17,7 +17,7 @@ import sys
 
 MCAST_GRP = '232.0.0.0'
 MCAST_PORT = 1900
-SENDER_IP = '239.255.255.250' 
+SENDER_IP = '192.168.56.1' 
 
 # create UDP socket for multicast
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -26,7 +26,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # listen to MCAST_GRP
-s.bind((MCAST_GRP, MCAST_PORT))
+s.bind(('', MCAST_PORT))
 
 # SSM 
 mreq = struct.pack("4sl4s", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY, socket.inet_aton(SENDER_IP))

@@ -7,7 +7,7 @@ require 'ipaddr'
 
 MULTICAST_ADDR = "ff05::c" 
 PORT = 1900
-SOURCE_ADDR = "192.168.1.100"
+SOURCE_ADDR = "192.168.56.1"
 
 # Create a UDP socket
 socket = UDPSocket.new( :AF_INET6)
