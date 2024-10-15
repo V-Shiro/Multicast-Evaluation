@@ -19,7 +19,7 @@ socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_REUSEADDR, true)
 socket.bind("::", PORT)
 
 
-# SSM (not supported)
+# SSM
 mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("::").hton + IPAddr.new(SOURCE_ADDR).hton
 socket.setsockopt(Socket::IPPROTO_IPV6, Socket::IPV6_JOIN_GROUP, mcast_opt)
 
