@@ -35,7 +35,8 @@ public class JavaSSM {
             socket.setReuseAddress(true);
 
             // join SSM
-            socket.joinGroup(multicastAddress, 0);
+            //socket.joinGroup(multicastAddress, 0);
+            socket.joinGroup(multicastAddress);
 
             // receive
             buf = new byte[1024];
