@@ -2,7 +2,7 @@
 // https://bluejekyll.github.io/blog/posts/multicasting-in-rust/
 // https://doc.rust-lang.org/std/net/struct.UdpSocket.html
 
-use std::net::{SocketAddr, UdpSocket, IPv4Addr};
+use std::net::{SocketAddr, UdpSocket, Ipv4Addr};
 use std::str;
 
 fn main() -> std::io::Result<()> {
