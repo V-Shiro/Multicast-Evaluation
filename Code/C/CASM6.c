@@ -72,7 +72,7 @@ int main() {
     printf("Receiving on port %d...\n", port);
     while (1) {
         char msgbuf[MSGBUFSIZE];
-        int addrlen = sizeof(addr);
+        socklen_t addrlen = sizeof(addr);
         int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &addr,&addrlen);
         if (nbytes < 0) {
             printf("recvfrom");
