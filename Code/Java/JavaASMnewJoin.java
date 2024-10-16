@@ -35,8 +35,8 @@ public class JavaASMnewJoin {
             socket.setReuseAddress(true);
 
             // setting for ASM IPv4 or IPv6
-            //networkInterface = NetworkInterface.getByName("232.0.0.0");
-            networkInterface = NetworkInterface.getByName("ff05::c");
+            networkInterface = NetworkInterface.getByName("232.0.0.0");
+            //networkInterface = NetworkInterface.getByName("ff05::c");
             sock = new InetSocketAddress(multicastAddress, multicastPort);
 
             // join ASM
