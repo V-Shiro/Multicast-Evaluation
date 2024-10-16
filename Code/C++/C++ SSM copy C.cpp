@@ -19,7 +19,7 @@
 #define MSGBUFSIZE 256
 #define GROUP "232.0.0.0"  // Example multicast group (SSM range 232.0.0.0/8)
 #define PORT 1900          // Example port number
-#define SOURCE "192.168.1.10" // Example source address (SSM source)
+#define SOURCE "192.168.56.1" // Example source address (SSM source)
 
 int main() {
     // Initialize Windows Socket API with given VERSION.

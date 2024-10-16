@@ -1,4 +1,5 @@
 //Source: https://medium.com/@jinscott/c-winsock2-multicasting-d17ba2d088b3
+//Source SSM: https://www.ibm.com/docs/en/zvse/6.2?topic=programs-setsockopt
 
 #include <iostream>
 #include <string>
@@ -7,15 +8,13 @@
 
 #pragma comment(lib,"WS2_32") //block comment warning
 
-int Port = 1900;
 #define UDP_MAX_SIZE 65535
-std::string IP = "239.255.255.250";
-int optval = 0;
+
+int Port = 8910;
+const char* multicastGroupIP = "226.1.1.1";
+const char* sourceIP = "225.0.0.1";
 
 int main(){
-
-    sockaddr_in AllowAddr;
-    ip_mreq JoinReq;
 
     //WSAStartup
     WSADATA wsaData;
@@ -35,8 +34,8 @@ int main(){
     }
 
     // Allow reuse of port
-    optval = 1;
-    if ((setsockopt(Socket, SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval))) < 0){
+    int optval = 1;
+    if (setsockopt(Socket, SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval)) < 0){
         std::cout << "Socket set SO_REUSEADDR fail\n";
         closesocket(Socket);
         WSACleanup();
@@ -44,6 +43,7 @@ int main(){
     }
 
     // Allow any address
+    sockaddr_in AllowAddr;
     memset(&AllowAddr, 0, sizeof(AllowAddr));
     AllowAddr.sin_family = AF_INET;
     AllowAddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -57,27 +57,24 @@ int main(){
         return -1;
     }
 
-    // Membership setting
-    if (inet_pton(AF_INET, (PCSTR)(IP.c_str()), &JoinReq.imr_multiaddr.s_addr) < 0) {
-        std::cout << "IP invalid\n";
-        closesocket(Socket);
-        WSACleanup();
-        return -1;
-    }
-    // This can be used to restrict to only receive form particular sender
-    JoinReq.imr_interface.s_addr = htonl(INADDR_ANY);
+    // Join the multicast group with a specific source (SSM)
+    struct ip_mreq_source JoinReq;
+    JoinReq.imr_multiaddr.s_addr = inet_addr(multicastGroupIP);  // Multicast group address
+    JoinReq.imr_sourceaddr.s_addr = inet_addr(sourceIP);  // Specific source address
+    JoinReq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
+
 
     // Join membership
-    if ((setsockopt(Socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&JoinReq, sizeof(JoinReq))) < 0) {
+    if ((setsockopt(Socket, IPPROTO_IP, IP_ADD_SOURCE_MEMBERSHIP, (char*)&JoinReq, sizeof(JoinReq))) < 0) {
         std::cout << "Multicast join membership fail. Error code: <" << WSAGetLastError() << ">\n";
         closesocket(Socket);
         WSACleanup();
         return -1;
     }
-    char ReceivedIP[46] = { 0 };
-    char ReceivedMessage[UDP_MAX_SIZE + 1] = { 0 };
 
     //Receive
+    char ReceivedIP[46] = { 0 };
+    char ReceivedMessage[UDP_MAX_SIZE + 1] = { 0 };
     while (1) {
         sockaddr_in ClientAddr;
         int addrlen = sizeof(ClientAddr);
@@ -95,6 +92,12 @@ int main(){
             break;
         }
         memset(ReceivedMessage, 0, UDP_MAX_SIZE);
+    }
+    if ((setsockopt(Socket, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char*)&JoinReq, sizeof(JoinReq))) < 0) {
+        std::cout << "Multicast drop membership fail. Error code: <" << WSAGetLastError() << ">\n";
+        closesocket(Socket);
+        WSACleanup();
+        return -1;
     }
     closesocket(Socket);
     WSACleanup();

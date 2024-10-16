@@ -1,4 +1,5 @@
 // Source: https://www.tenouk.com/Module41c.html
+// Source SSM: https://www.ibm.com/docs/en/zvse/6.2?topic=programs-setsockopt
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -10,8 +11,9 @@
 #include <cstring>      // For memset
 
 
-int port = 1900;
-const char* multicastGroupIP = "239.255.255.250";
+int port = 4321;
+const char* multicastGroupIP = "226.1.1.1";
+const char* sourceIP = "225.0.0.1";
 
 int main(){
     /* Create a datagram socket on which to receive. */
@@ -25,7 +27,7 @@ int main(){
     /* Enable SO_REUSEADDR to allow multiple instances of this */
     /* application to receive copies of the multicast datagrams. */
     int reuse = 1;
-    if (setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, (char * ) &reuse, sizeof(reuse)) < 0){
+    if (setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, (char * ) & reuse, sizeof(reuse)) < 0){
         perror("Setting SO_REUSEADDR error");
         close(sd);
         return 1;
@@ -45,11 +47,13 @@ int main(){
     }
 
     // Join the multicast group
-    struct ip_mreq group;
-    group.imr_multiaddr.s_addr = inet_addr(multicastGroupIP);
-    //group.imr_interface.s_addr = inet_addr("203.106.93.94");
-    group.imr_interface.s_addr = htonl(INADDR_ANY);
-    if (setsockopt(sd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char * ) & group, sizeof(group)) < 0){
+
+    struct ip_mreq_source mreq;
+    mreq.imr_multiaddr.s_addr = inet_addr(multicastGroupIP);  // Multicast group address
+    mreq.imr_sourceaddr.s_addr = inet_addr(sourceIP);  // Specific source address
+    mreq.imr_interface.s_addr = htonl(INADDR_ANY);  // Use the default network interface
+
+    if (setsockopt(sd, IPPROTO_IP, IP_ADD_SOURCE_MEMBERSHIP, (char * ) &mreq, sizeof(mreq)) < 0){
         perror("Adding multicast group error");
         close(sd);
         return 1;
@@ -74,6 +78,11 @@ int main(){
         }
         std::cout << "Message from multicast sender: " << buffer << std::endl;
     }
+    if (setsockopt(sd, IPPROTO_IP, IP_DROP_SOURCE_MEMBERSHIP, (char * ) &mreq, sizeof(mreq)) < 0){
+        perror("Droping multicast group error");
+        close(sd);
+        return 1;
+    }
     close(sd);
-        return 0;
+    return 0;
 }
