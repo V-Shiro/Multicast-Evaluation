@@ -83,8 +83,7 @@ int main() {
     while (1) {
         char msgbuf[MSGBUFSIZE];
         struct sockaddr_in6 remoteAddr;
-        int addrlen = sizeof(remoteAddr);
-        //macOS or Linux: uint addrlen = (uint)sizeof(remoteAddr);
+        socklen_t addrlen = sizeof(remoteAddr);
         int nbytes = recvfrom(fd,msgbuf,MSGBUFSIZE,0,(struct sockaddr *) &remoteAddr,&addrlen);
         if (nbytes < 0) {
             printf("recvfrom");
