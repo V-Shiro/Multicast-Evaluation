@@ -20,6 +20,8 @@ public class JavaASMnewJoin {
         MulticastSocket socket = null;
         DatagramPacket packet = null; 
         byte[] buf = null;   
+        InetSocketAddress sock = null;
+        NetworkInterface networkInterface = null;
 
         try { 
             // set multicast ip
@@ -33,29 +35,26 @@ public class JavaASMnewJoin {
             socket.setReuseAddress(true);
 
             // setting for ASM IPv4 or IPv6
-            //NetworkInterface networkInterface = NetworkInterface.getByName("232.0.0.0");
-            NetworkInterface networkInterface = NetworkInterface.getByName("ff05::c");
+            //networkInterface = NetworkInterface.getByName("232.0.0.0");
+            networkInterface = NetworkInterface.getByName("ff05::c");
+            sock = new InetSocketAddress(multicastAddress, multicastPort);
+
             // join ASM
-            socket.joinGroup(multicastAddress, networkInterface);
+            socket.joinGroup(sock, networkInterface);
 
             // receive
             buf = new byte[1024];
             packet = new DatagramPacket(buf, buf.length);
-            while (Thread.currentThread().isInterrupted()) {
-
+            while (true) {
                 socket.receive(packet);
-
                 String received = new String(packet.getData(), 0, packet.getLength());
                 System.out.println(received);
-                if ("end".equals(received)) {
-                    break;
-                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }  
         try { //clean up
-            socket.leaveGroup(multicastAddress, networkInterface);
+            socket.leaveGroup(sock, networkInterface);
             socket.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
