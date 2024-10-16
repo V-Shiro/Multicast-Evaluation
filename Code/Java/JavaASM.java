@@ -22,8 +22,8 @@ public class JavaASM {
 
         try { 
             // set multicast ip
-            multicastAddress = InetAddress.getByName("232.0.0.0");
-            //multicastAddress = InetAddress.getByName("ff05::c");
+            //multicastAddress = InetAddress.getByName("232.0.0.0");
+            multicastAddress = InetAddress.getByName("ff05::c");
 
             // create socket
             socket = new MulticastSocket(multicastPort);

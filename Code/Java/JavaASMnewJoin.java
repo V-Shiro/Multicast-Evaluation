@@ -10,7 +10,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 
-public class JavaASM6 { 
+public class JavaASMnewJoin { 
     public static void main(String[] args){
 
         // port and multicast IP
@@ -23,6 +23,7 @@ public class JavaASM6 {
 
         try { 
             // set multicast ip
+            //multicastAddress = InetAddress.getByName("232.0.0.0");
             multicastAddress = InetAddress.getByName("ff05::c");
 
             // create socket
@@ -31,11 +32,11 @@ public class JavaASM6 {
             // reuse address
             socket.setReuseAddress(true);
 
-            // setting for ASM IPv6
+            // setting for ASM IPv4 or IPv6
+            //NetworkInterface networkInterface = NetworkInterface.getByName("232.0.0.0");
             NetworkInterface networkInterface = NetworkInterface.getByName("ff05::c");
             // join ASM
             socket.joinGroup(multicastAddress, networkInterface);
-            //socket.joinGroup(multicastAddress);
 
             // receive
             buf = new byte[1024];
@@ -54,7 +55,7 @@ public class JavaASM6 {
             System.out.println(e.getMessage());
         }  
         try { //clean up
-            socket.leaveGroup(multicastAddress);
+            socket.leaveGroup(multicastAddress, networkInterface);
             socket.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
