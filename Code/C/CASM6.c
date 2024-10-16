@@ -59,18 +59,8 @@ int main() {
     }
 
     // join Multicast Group with membership
-    struct sockaddr_in6 maddr;
-    memset(&maddr, 0, sizeof(maddr));
-
     struct ipv6_mreq mreq;
-    
-    /* inet_pton(AF_INET6, group, &maddr.sin6_addr);
-    memcpy(&mreq.ipv6mr_multiaddr, &maddr.sin6_addr, sizeof(mreq.ipv6mr_multiaddr));
-    */
-
-    //mreq.ipv6mr_multiaddr.sin6_addr = inet_addr(group);
-    inet_pton(AF_INET6, group, &mreq.ipv6mr_multiaddr);
-    
+    inet_pton(AF_INET6, group, &mreq.ipv6mr_multiaddr); 
     mreq.ipv6mr_interface = htonl(INADDR_ANY);
     
     if (setsockopt(fd, IPPROTO_IPV6, IPV6_ADD_MEMBERSHIP, (char*) &mreq, sizeof(mreq)) < 0){
