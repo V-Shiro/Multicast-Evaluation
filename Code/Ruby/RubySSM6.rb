@@ -21,7 +21,7 @@ socket.bind("::", PORT)
 
 # SSM
 mcast_opt =  IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new("::").hton + IPAddr.new(SOURCE_ADDR).hton
-socket.setsockopt(Socket::IPPROTO_IPV6, Socket::IPV6_JOIN_GROUP, mcast_opt)
+socket.setsockopt(Socket::IPPROTO_IPV6, Socket::IPV6_ADD_SOURCE_MEMBERSHIP, mcast_opt)
 
 # receive and check for source
 loop do
@@ -29,5 +29,5 @@ loop do
     puts msg
 end
 
-socket.setsockopt(Socket::IPPROTO_IPV6, Socket::IPV6_LEAVE_GROUP, mcast_opt)
+socket.setsockopt(Socket::IPPROTO_IPV6, Socket::IPV6_DROP_SOURCE_MEMBERSHIP, mcast_opt)
 socket.close
