@@ -38,7 +38,7 @@ func main() {
 		// Read from the connection
 		//n, cm, srcAddr, err := conn.ReadMsgUDP(buf, nil)
 		buffer := make([]byte, 1024)
-		numBytes, src, err := conn.ReadFromUDP(buffer)
+		n, srcAddr, err := conn.ReadFromUDP(buffer)
 		if err != nil {
 			fmt.Println("Error reading message:", err)
 			continue
@@ -46,7 +46,7 @@ func main() {
 
 		// Check if the source address matches
 		if srcAddr.IP.String() == sourceAddr {
-			fmt.Printf("Received %d bytes from %s: %s\n", n, srcAddr.String(), string(buf[:n]))
+			fmt.Printf("Received %d bytes from %s: %s\n", n, srcAddr.String(), string(buffer[:n]))
 		}
 	}
 }
