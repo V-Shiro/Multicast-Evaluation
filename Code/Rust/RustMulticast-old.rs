@@ -2,8 +2,8 @@ use std::net::{UdpSocket, Ipv4Addr, SocketAddrV4};
 use std::str;
 
 fn main() -> std::io::Result<()> {
-    let multicast_group = "239.255.255.250";
-    let port = 12345;
+    let multicast_group = "232.0.0.0";
+    let port = 1900;
     
     // Bind to the specified port on the local machine
     let socket = UdpSocket::bind(("0.0.0.0", port))?;

@@ -1,1 +1,0 @@
-https://stackoverflow.com/questions/45442416/what-happens-if-i-dont-send-ip-drop-membership-before-closing-my-socket
