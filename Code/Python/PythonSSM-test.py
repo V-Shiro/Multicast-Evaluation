@@ -1,10 +1,10 @@
-#Source: https://stackoverflow.com/questions/76773374/when-subscribing-to-a-multicast-group-what-is-the-best-way-to-filter-traffic-fr
-#Source: https://docs.python.org/3/library/socket.html
-#Source: https://stackoverflow.com/questions/16419794/what-is-4sl-format-in-struct-pack-python
+#https://stackoverflow.com/questions/76773374/when-subscribing-to-a-multicast-group-what-is-the-best-way-to-filter-traffic-fr
+#https://docs.python.org/3/library/socket.html
+#https://stackoverflow.com/questions/16419794/what-is-4sl-format-in-struct-pack-python
 
 # No SSM Support
-#Source: https://github.com/python/cpython/issues/89415
-#Source: https://github.com/python/cpython/pull/103684
+#https://github.com/python/cpython/issues/89415
+#https://github.com/python/cpython/pull/103684
 
 # IS NOT SUPPORTED YET
 

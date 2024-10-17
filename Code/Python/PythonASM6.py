@@ -1,6 +1,6 @@
-#Source: https://stackoverflow.com/questions/603852/how-do-you-udp-multicast-in-python
-#Source: https://docs.python.org/3/library/socket.html
-#Source: https://stackoverflow.com/questions/16419794/what-is-4sl-format-in-struct-pack-python
+#https://stackoverflow.com/questions/603852/how-do-you-udp-multicast-in-python
+#https://docs.python.org/3/library/socket.html
+#https://stackoverflow.com/questions/16419794/what-is-4sl-format-in-struct-pack-python
 
 
 # OS: works with windows and linux

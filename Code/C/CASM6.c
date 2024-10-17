@@ -1,5 +1,5 @@
-//Source used: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
-//Source: https://github.com/bjornl/ipv6_multicast_example/blob/master/ipv6_multicast_recv/ipv6_multicast_recv.c
+//https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//https://github.com/bjornl/ipv6_multicast_example/blob/master/ipv6_multicast_recv/ipv6_multicast_recv.c
 
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict

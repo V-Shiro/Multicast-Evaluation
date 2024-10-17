@@ -1,7 +1,6 @@
 // https://github.com/dmichael/go-multicast/blob/master/multicast/listener.go
 // https://pkg.go.dev/net#UDPConn
 // https://pkg.go.dev/net
-// guide: https://pkg.go.dev/golang.org/x/net/ipv4
 
 // udp = IPv4 and IPv6, udp4 = only IPv4, udp6 = only IPv6 //https://pkg.go.dev/net#Dial
 package main

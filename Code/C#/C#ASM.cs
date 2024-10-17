@@ -1,5 +1,5 @@
-// Source: https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.udpclient.joinmulticastgroup?view=net-7.0
-// Source: https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.multicastoption?view=net-8.0
+//https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.udpclient.joinmulticastgroup?view=net-7.0
+//https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.multicastoption?view=net-8.0
 
 using System;
 using System.Net;

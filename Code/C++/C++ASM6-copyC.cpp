@@ -1,4 +1,4 @@
-//Source used: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
 
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict

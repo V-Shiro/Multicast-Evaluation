@@ -1,5 +1,5 @@
-// Source: https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.multicastoption?view=net-8.0
-// Source: https://www.webdevtutor.net/blog/c-sharp-multicast-socket-example
+//https://learn.microsoft.com/de-de/dotnet/api/system.net.sockets.multicastoption?view=net-8.0
+//https://www.webdevtutor.net/blog/c-sharp-multicast-socket-example
 
 using System;
 using System.Net;

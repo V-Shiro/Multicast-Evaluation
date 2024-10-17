@@ -1,5 +1,5 @@
-//Source: https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
-//Source: https://medium.com/@jinscott/c-winsock2-multicasting-d17ba2d088b3
+//https://gist.github.com/hostilefork/f7cae3dc33e7416f2dd25a402857b6c6
+//https://medium.com/@jinscott/c-winsock2-multicasting-d17ba2d088b3
 
 #ifdef _WIN32
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
