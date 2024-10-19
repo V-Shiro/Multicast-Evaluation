@@ -13,7 +13,7 @@ func main() {
 
 	// multicast group
 	group := net.UDPAddr{IP: net.ParseIP("ff05::c")}
-	source := net.UDPAddr{IP: net.ParseIP("192.168.56.1")}
+	source := net.UDPAddr{IP: net.ParseIP("fe80::30be:e66:9ff2:cbb6")}
 
 	c, err := net.ListenPacket("udp6", "[::]:1900")
 	if err != nil {
