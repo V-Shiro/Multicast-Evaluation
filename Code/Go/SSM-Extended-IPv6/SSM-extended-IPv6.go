@@ -12,7 +12,8 @@ import (
 func main() {
 
 	// multicast group
-	group := net.ParseIP("ff05::c")
+	group := net.UDPAddr{IP: net.ParseIP("ff05::c")}
+	source := net.UDPAddr{IP: net.ParseIP("192.168.56.1")}
 
 	c, err := net.ListenPacket("udp6", "[::]:1900")
 	if err != nil {
@@ -23,7 +24,7 @@ func main() {
 
 	p := ipv6.NewPacketConn(c)
 
-	if err := p.JoinGroup(nil, &net.UDPAddr{IP: group}); err != nil {
+	if err := p.JoinSourceSpecificGroup(nil, &group, &source); err != nil {
 		fmt.Println("JoinGroup Error: ", err)
 	}
 
@@ -37,7 +38,7 @@ func main() {
 		fmt.Println("Received from ", src, string(buffer[:n]))
 	}
 
-	if err := p.LeaveGroup(nil, &net.UDPAddr{IP: group}); err != nil {
+	if err := p.LeaveSourceSpecificGroup(nil, &group, &source); err != nil {
 		fmt.Println("LeaveGroup Error: ", err)
 	}
 }
