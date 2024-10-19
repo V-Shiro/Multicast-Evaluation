@@ -1,18 +1,29 @@
 // https://github.com/rust-lang/socket2/blob/master/src/socket.rs
+// https://kornel.ski/rust-sys-crate
+// https://doc.rust-lang.org/cargo/reference/publishing.html
+// https://doc.rust-lang.org/book/ffi.html
 
 use std::net;
 use std::net::UdpSocket;
 
 use crate::sys::{self, c_int, getsockopt, setsockopt, Bool};
 
-const IP_ADD_SOURCE_MEMBERSHIP;
+extern "C" {
+    setsockopt(int, int, int, const char*, socklen_t) -> int; 
+}
+extern "C" {
+    setsockopt(int, int, int, const char*, int) -> int; 
+}
+
+
+// const IP_ADD_SOURCE_MEMBERSHIP;
 
 /// Set value for the `SO_REUSEADDR` option on this socket.
 ///
 /// This indicates that further calls to `bind` may allow reuse of local
 /// addresses. For IPv4 sockets this means that a socket may bind even when
 /// there's a socket already listening on this port.
-pub fn set_reuse_address(&self, reuse: bool) -> io::Result<()> {
+fn set_reuse_address(&self, reuse: bool) -> io::Result<()> {
     unsafe {
         setsockopt(
             self.as_raw(),
@@ -44,12 +55,7 @@ pub fn set_reuse_address(&self, reuse: bool) -> io::Result<()> {
     target_os = "espidf",
     target_os = "vita",
 )))]
-pub fn join_ssm_v4(
-    &self,
-    source: &Ipv4Addr,
-    group: &Ipv4Addr,
-    interface: &Ipv4Addr,
-) -> io::Result<()> {
+fn join_ssm_v4(source: &Ipv4Addr, group: &Ipv4Addr, interface: &Ipv4Addr) -> io::Result<()> {
     let mreqs = sys::IpMreqSource {
         imr_multiaddr: sys::to_in_addr(group),
         imr_interface: sys::to_in_addr(interface),
@@ -82,12 +88,7 @@ pub fn join_ssm_v4(
     target_os = "espidf",
     target_os = "vita",
 )))]
-pub fn leave_ssm_v4(
-    &self,
-    source: &Ipv4Addr,
-    group: &Ipv4Addr,
-    interface: &Ipv4Addr,
-) -> io::Result<()> {
+fn leave_ssm_v4(source: &Ipv4Addr, group: &Ipv4Addr, interface: &Ipv4Addr) -> io::Result<()> {
     let mreqs = sys::IpMreqSource {
         imr_multiaddr: sys::to_in_addr(group),
         imr_interface: sys::to_in_addr(interface),
@@ -122,7 +123,7 @@ pub fn leave_ssm_v4(
     target_os = "espidf",
     target_os = "vita",
 )))]
-pub fn join_ssm_v6(&self, source: &Ipv6Addr, group: &Ipv6Addr, interface: &Ipv6Addr) -> io::Result<()> {
+fn join_ssm_v6(&self, source: &Ipv6Addr, group: &Ipv6Addr, interface: &Ipv6Addr) -> io::Result<()> {
     let mreqs = sys::Ipv6MreqSource {
         ipv6mr_multiaddr: sys::to_in6_addr(group),
         ipv6mr_interface: sys::to_in6_addr(interface),
@@ -155,7 +156,7 @@ pub fn join_ssm_v6(&self, source: &Ipv6Addr, group: &Ipv6Addr, interface: &Ipv6A
     target_os = "espidf",
     target_os = "vita",
 )))]
-pub fn leave_ssm_v6(&self, source: &Ipv6Addr, group: &Ipv6Addr, interface: &Ipv6Addr) -> io::Result<()> {
+fn leave_ssm_v6(&self, source: &Ipv6Addr, group: &Ipv6Addr, interface: &Ipv6Addr) -> io::Result<()> {
     let mreqs = sys::Ipv6MreqSource {
         ipv6mr_multiaddr: sys::to_in6_addr(group),
         ipv6mr_interface: sys::to_in6_addr(interface),
@@ -178,13 +179,14 @@ from!(Socket, net::UdpSocket);
 fn main() -> std::io::Result<()> {
     //multicast address
     let multicastAddr = Ipv4Addr::new(232, 0, 0, 0);
+    let sourceAddr = Ipv4Addr::new(232, 0, 0, 0);
 
     // Create and bind UDP socket
     let socket = UdpSocket::bind("0.0.0.0:1900")?;
 
     // add multicast membership
     let netInt = Ipv4Addr::new(0, 0, 0, 0);
-    socket.join_multicast_v4(&multicastAddr, &netInt)?;
+    socket.join_ssm_v4(&multicastAddr, &sourceAddr, &netInt)?;
 
     //receive
     let mut buf = [0; 1024];
@@ -194,5 +196,5 @@ fn main() -> std::io::Result<()> {
         println!("Received {} bytes from {}: {}", len, src, msg);
     }
     // drop membership
-    socket.leave_multicast_v4(&multicastAddr, &netInt)?;
+    socket.leave_ssm_v4(&multicastAddr, &sourceAddr, &netInt)?;
 }
