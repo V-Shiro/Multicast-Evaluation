@@ -4,6 +4,7 @@
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
     #include <Ws2tcpip.h> // needed for ip_mreq definition for multicast
     #include <Windows.h>
+    #include <io.h>
 #else
     #include <sys/types.h>
     #include <sys/socket.h>
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]){
     // IPv6 Range ff00::/8
     //char* group = "ff05::c";
 
-    int port = 1900; 
+    int port = 5000; 
 
     // test message with delay
     const int delay_secs = 1;
