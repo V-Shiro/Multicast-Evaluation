@@ -11,17 +11,10 @@ import (
 
 func main() {
 
-	en0, err := net.InterfaceByName("en0")
-	if err != nil {
-		fmt.Println("Interface Error: ", err)
-	}
-	eth0, err := net.InterfaceByName("eth0")
-	if err != nil {
-		fmt.Println("Interface Error: ", err)
-	}
+	// multicast group
 	group := net.IPv4(232, 0, 0, 0)
 
-	c, err := net.ListenPacket("udp4", "232.0.0.0:1900")
+	c, err := net.ListenPacket("udp4", "0.0.0.0:1900")
 	if err != nil {
 		fmt.Println("Listen Error: ", err)
 		return
@@ -29,15 +22,13 @@ func main() {
 	defer c.Close()
 
 	p := ipv4.NewPacketConn(c)
-	if err := p.JoinGroup(en0, &net.UDPAddr{IP: group}); err != nil {
-		fmt.Println("JoinGroup Error: ", err)
-	}
-	if err := p.JoinGroup(eth0, &net.UDPAddr{IP: group}); err != nil {
+
+	if err := p.JoinGroup(nil, &net.UDPAddr{IP: group}); err != nil {
 		fmt.Println("JoinGroup Error: ", err)
 	}
 
 	buffer := make([]byte, 1500)
-	for {
+	for i := 0; i < 3; i++ { //for {
 		n, _, src, err := p.ReadFrom(buffer)
 		if err != nil {
 			fmt.Println("Read Error: ", err)
@@ -46,7 +37,7 @@ func main() {
 		fmt.Println("Received from ", src, string(buffer[:n]))
 	}
 
-	if err := p.LeaveGroup(en0, &net.UDPAddr{IP: group}); err != nil {
+	if err := p.LeaveGroup(nil, &net.UDPAddr{IP: group}); err != nil {
 		fmt.Println("LeaveGroup Error: ", err)
 	}
 }
