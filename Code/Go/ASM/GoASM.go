@@ -24,6 +24,7 @@ func main() {
 	}
 
 	// Open up a connection (create and bind socket)
+	// --- Loopback gets deactivated, no local testing
 	conn, err := net.ListenMulticastUDP("udp", nil, addr)
 	if err != nil {
 		log.Fatal(err)

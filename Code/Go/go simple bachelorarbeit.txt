@@ -1,0 +1,8 @@
+https://pkg.go.dev/net#ListenMulticastUDP
+
+ListenMulticastUDP nur für simple, kleine Programme
+sonst:
+golang.org/x/net/ipv4 
+(https://pkg.go.dev/golang.org/x/net/ipv4)
+golang.org/x/net/ipv6 
+(https://pkg.go.dev/golang.org/x/net/ipv6)
