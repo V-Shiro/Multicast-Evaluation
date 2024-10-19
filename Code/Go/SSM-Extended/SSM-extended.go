@@ -12,9 +12,8 @@ import (
 func main() {
 
 	// multicast group
-	//group := net.IPv4(232, 0, 0, 0)
 	group := net.UDPAddr{IP: net.IPv4(232, 0, 0, 0)}
-	source := net.UDPAddr{IP: net.IPv4(192, 168, 0, 1)}
+	source := net.UDPAddr{IP: net.IPv4(192, 168, 56, 1)}
 
 	c, err := net.ListenPacket("udp4", "0.0.0.0:1900")
 	if err != nil {
