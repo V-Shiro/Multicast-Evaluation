@@ -11,6 +11,7 @@ fn main() -> std::io::Result<()> {
 
     // Create and bind UDP socket
     let socket = UdpSocket::bind("0.0.0.0:1900")?;
+    println!(socket);
 
     // add multicast membership
     let netInt = Ipv4Addr::new(0, 0, 0, 0);

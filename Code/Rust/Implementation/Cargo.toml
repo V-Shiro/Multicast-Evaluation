@@ -1,0 +1,5 @@
+[package]
+name = "rust_implementation"
+
+[dependencies]
+libc = "0.2"
