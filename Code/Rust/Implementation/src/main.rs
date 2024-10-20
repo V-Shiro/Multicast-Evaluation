@@ -9,15 +9,12 @@ use std::str;
 //use std::os::fd::{AsRawFd, RawFd};
 use std::os::unix::io::{AsRawFd, RawFd};
 
-//c datatype and structs
+//c datatypes and structs
 use libc::{c_int, c_void, ip_mreq_source, in_addr};
 //c constants
 use libc::{SOL_SOCKET, SO_REUSEADDR, IPPROTO_IP, IP_ADD_SOURCE_MEMBERSHIP, IP_DROP_SOURCE_MEMBERSHIP};
 //c functions
 use libc::{setsockopt, close};
-
-
-//type Socket = c_int;
 
 
 fn to_in_addr(addr: &Ipv4Addr) -> in_addr {
@@ -47,9 +44,9 @@ fn activate_reuse_address(socket: i32) -> i32 {
 //add ssm membership
 fn add_source_membership(socket: i32, group: &Ipv4Addr, source: &Ipv4Addr, interface: &Ipv4Addr) -> i32 {
     let mreqs = ip_mreq_source {
-        imr_multiaddr: to_in_addr(group),  // Multicast group address
-        imr_interface: to_in_addr(interface), // Specific source address
-        imr_sourceaddr: to_in_addr(source), // Use the default network interface
+        imr_multiaddr: to_in_addr(group),  
+        imr_interface: to_in_addr(interface),
+        imr_sourceaddr: to_in_addr(source), 
     };
     let mreqslen = std::mem::size_of_val(&mreqs) as libc::socklen_t;
     unsafe {
@@ -66,9 +63,9 @@ fn add_source_membership(socket: i32, group: &Ipv4Addr, source: &Ipv4Addr, inter
 //drop ssm membership
 fn drop_source_membership(socket: i32, group: &Ipv4Addr, source: &Ipv4Addr, interface: &Ipv4Addr) -> i32 {
     let mreqs = ip_mreq_source {
-        imr_multiaddr: to_in_addr(group),  // Multicast group address
-        imr_interface: to_in_addr(interface), // Specific source address
-        imr_sourceaddr: to_in_addr(source), // Use the default network interface
+        imr_multiaddr: to_in_addr(group), 
+        imr_interface: to_in_addr(interface), 
+        imr_sourceaddr: to_in_addr(source), 
     };
     let mreqslen = std::mem::size_of_val(&mreqs) as libc::socklen_t;
     unsafe {
