@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
     // IPv6 Range ff00::/8
     //char* group = "ff05::c";
 
-    int port = 5000; 
+    int port = 1900; 
 
     // test message with delay
     const int delay_secs = 1;
